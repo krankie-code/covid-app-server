@@ -7,12 +7,13 @@ const Game = require('../models/game');
 
 
 router.get('/user', isLoggedIn(),async (req,res,next)=>{
-    console.log('json')
     try {
-        const users = await User.find()
-        .populate('arrayScore')
-        
-        res.status(200).json(users)
+        const users = await User.find().populate('arrayScore')
+        users.sort((a,b)=>{
+          return Math.max.apply(Math, b.arrayScore.map(function(o) { return o.score;})) - Math.max.apply(Math, a.arrayScore.map(function(o) { return o.score;}))
+        })
+        const position = users.findIndex(user => user._id == req.session.currentUser._id);
+        res.status(200).json({users, position})
     } catch (error) {
         console.log(error)
     }

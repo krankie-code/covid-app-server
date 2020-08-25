@@ -14,6 +14,7 @@ const auth = require("./routes/auth");
 var indexRouter = require("./routes/index");
 var userRouter = require("./routes/user");
 var resultRouter = require("./routes/result");
+var uploaderRouter = require("./routes/upload")
 
 // MONGOOSE CONNECTION
 mongoose
@@ -51,8 +52,8 @@ app.use(
       ttl: 24 * 60 * 60, // 1 day
     }),
     secret: process.env.SECRET_SESSION,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
     },
@@ -67,9 +68,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // ROUTER MIDDLEWARE
-app.use("/auth", auth);
 app.use("/api", userRouter);
-app.use("/api", resultRouter)
+app.use("/api", resultRouter);
+app.use("/api",uploaderRouter);
+app.use("/auth", auth);
 
 app.use("/", indexRouter);
 

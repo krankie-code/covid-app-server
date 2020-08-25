@@ -4,6 +4,7 @@ const createError = require("http-errors");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const User = require("../models/user");
+const Game = require("../models/game")
 
 // HELPER FUNCTIONS
 const {
@@ -104,7 +105,10 @@ router.get("/private", isLoggedIn(), (req, res, next) => {
 router.get("/me", isLoggedIn(), (req, res, next) => {
     // si está logueado, previene que el password sea enviado y devuelve un json con los datos del usuario (disponibles en req.session.currentUser)
     req.session.currentUser.password = "*";
-    res.json(req.session.currentUser);
+    const userId = req.session.currentUser._id
+    User.findById(userId).populate('arrayScore')
+        .then(user =>{console.log(user); res.json(user)})
+        .catch(error => console.log(error))
   });
 
 

@@ -18,6 +18,7 @@ router.post('/result', (req,res,next) =>{
             User.findByIdAndUpdate(userId,{$push:{arrayScore:newScore._id}}, {new:true} )
             .then((updatedUser)=>{
                 req.session.currentUser = updatedUser;
+                console.log(req.session.currentUser)
                 res.json(updatedUser)})
         })
 
