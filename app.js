@@ -33,7 +33,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.PUBLIC_DOMAIN ,'https://covid-app-8af10.web.app'],
+    origin: [process.env.PUBLIC_DOMAIN ,'https://project-covid-app.herokuapp.com'],
   })
 );
 // app.use((req, res, next) => {
@@ -74,7 +74,10 @@ app.use("/api",uploaderRouter);
 app.use("/auth", auth);
 
 app.use("/", indexRouter);
-
+app.use((req, res) => {
+  // If no routes match, send them the React HTML.
+  res.sendFile(__dirname + "/public/index.html");
+});
 
 // ERROR HANDLING
 // catch 404 and forward to error handler
