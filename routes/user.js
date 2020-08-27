@@ -23,18 +23,18 @@ router.get('/user', isLoggedIn(),async (req,res,next)=>{
 router.put('/user/edit-profile',isLoggedIn(), async (req,res,next)=>{
     const userId = req.session.currentUser._id;
 
- const { username,email,password} = req.body;
-        /* console.dir(req.file)
-        console.log(req.file.secure_url) */
+ const { username,email,password,img} = req.body;
+       
     let image_url;
  
-    if (typeof req.file != 'undefined') {
-        image_url= req.file.path;
+    if (img !== '') {
+        image_url= img;
     } else {
         image_url= '../images/avatar.png';
     } 
     try {
         const updatedUser = await User.findOneAndUpdate({ _id:userId }, {username,password,email,img: image_url}, {new:true})
+        req.session.currentUser = updatedUser;
         res.status(200).json(updatedUser)
     } catch (error) {
         console.log(error)

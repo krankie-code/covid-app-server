@@ -33,7 +33,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.PUBLIC_DOMAIN ,'https://project-covid-app.herokuapp.com'],
+    origin: [process.env.PUBLIC_DOMAIN ,'https://project-covid-app.herokuapp.com','http://project-covid-app.herokuapp.com'],
   })
 );
 // app.use((req, res, next) => {

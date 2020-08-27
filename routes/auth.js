@@ -27,8 +27,9 @@ router.post(
     try {
       // chequea si el username ya existe en la BD
       const usernameExists = await User.findOne({ username }, "username");
+      const emailExists = await User.findOne({ email }, "email")
       // si el usuario ya existe, pasa el error a middleware error usando next()
-      if (usernameExists) return next(createError(400));
+      if (usernameExists || emailExists) return next(createError(400));
       else {
         // en caso contratio, si el usuario no existe, hace hash del password y crea un nuevo usuario en la BD
         const salt = bcrypt.genSaltSync(saltRounds);
